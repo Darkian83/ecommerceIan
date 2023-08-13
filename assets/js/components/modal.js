@@ -15,7 +15,9 @@ function showModal(products) {
             src="${productFinded.image}"
             alt="${productFinded.name}"
         />
-      <button id="modal-boton-carrito" class="add-to-cart-button">
+      <button id="modal-boton-carrito" class="add-to-cart-button ${
+        productFinded.quantity > 0 ? "" : "disable"
+      }">
         Agregar al Carrito
       </button>
       <button id="modal-boton-cerrar" class="close-modal-button">

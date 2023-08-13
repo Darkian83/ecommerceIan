@@ -645,3 +645,9 @@ button {
   padding: 10px 20px;
   cursor: pointer;
 }
+
+/* Disable */
+.disable {
+  pointer-events: none;
+  opacity: 0.5;
+}

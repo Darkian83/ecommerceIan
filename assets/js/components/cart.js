@@ -40,15 +40,21 @@ function cart(db, printProducts) {
             </h3>
             <span class="article__price">$${product.price}</span>
             <div class="article__quantity">
-              <button type="button" class="article__quantity-btn article--minus" data-id="${item.id}">
+              <button type="button" class="article__quantity-btn article--minus" data-id="${
+                item.id
+              }">
                 <i class='bx bx-minus' ></i>
               </button>
               <span class="article__quantity-text">${item.qty}</span>
-              <button type="button" class="article__quantity-btn article--plus" data-id="${item.id}">
+              <button type="button" class="article__quantity-btn article--plus ${
+                item.qty >= product.quantity ? "disable" : ""
+              }" data-id="${item.id}">
                 <i class='bx bx-plus' ></i>
               </button>
             </div>
-            <button type="button" class="article__btn remove-from-cart" data-id="${item.id}">
+            <button type="button" class="article__btn remove-from-cart" data-id="${
+              item.id
+            }">
               <i class='bx bx-trash' ></i>
             </button>
           </div>

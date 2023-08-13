@@ -1,17 +1,19 @@
-function cart (db, printProducts) {
-  // Elementos del DOM 
-  const productsDOM = document.querySelector('.products__container')
-  const notifyDOM = document.querySelector('.notify')
-  const cartDOM = document.querySelector('.cart__body')
-  const countDOM = document.querySelector('.cart__count--item')
-  const totalDOM = document.querySelector('.cart__total--item')
-  const checkoutDOM = document.querySelector('.btn--buy')
+function cart(db, printProducts) {
+  // Elementos del DOM
+  const productsDOM = document.querySelector(".products__container");
+  const notifyDOM = document.querySelector(".notify");
+  const cartDOM = document.querySelector(".cart__body");
+  const countDOM = document.querySelector(".cart__count--item");
+  const totalDOM = document.querySelector(".cart__total--item");
+  const checkoutDOM = document.querySelector(".btn--buy");
+  const detailsButton = document.querySelector(".details-button");
+  const modalOverlay = document.querySelector(".modal-overlay");
 
-  let cart = []
-  
-  // Funciones 
-  function printCart () {
-    let htmlCart = ''
+  let cart = [];
+
+  // Funciones
+  function printCart() {
+    let htmlCart = "";
 
     if (cart.length === 0) {
       htmlCart += `
@@ -19,11 +21,11 @@ function cart (db, printProducts) {
         <i class="bx bx-cart"></i>
         <p class="cart__empty--text">No hay productos en el carrito</p>
       </div>
-      `
-      notifyDOM.classList.remove('show--notify')
+      `;
+      notifyDOM.classList.remove("show--notify");
     } else {
       for (const item of cart) {
-        const product = db.find(p => p.id === item.id)
+        const product = db.find((p) => p.id === item.id);
         htmlCart += `
         <article class="article">
           <div class="article__image">
@@ -51,108 +53,122 @@ function cart (db, printProducts) {
             </button>
           </div>
         </article>
-        `
+        `;
       }
-      notifyDOM.classList.add('show--notify')
+      notifyDOM.classList.add("show--notify");
     }
 
-    cartDOM.innerHTML = htmlCart
-    notifyDOM.innerHTML = showItemsCount()
-    countDOM.innerHTML = showItemsCount()
-    totalDOM.innerHTML = showTotal()
+    cartDOM.innerHTML = htmlCart;
+    notifyDOM.innerHTML = showItemsCount();
+    countDOM.innerHTML = showItemsCount();
+    totalDOM.innerHTML = showTotal();
   }
 
   function addToCart(id, qty = 1) {
-    const itemFinded = cart.find(i => i.id === id)
+    const itemFinded = cart.find((i) => i.id === id);
 
     if (itemFinded) {
-      itemFinded.qty += qty
+      itemFinded.qty += qty;
     } else {
-      cart.push({id, qty})
+      cart.push({ id, qty });
     }
 
-    printCart()
+    printCart();
   }
 
-  function removeFromCart (id, qty = 1) {
-    const itemFinded = cart.find(i => i.id === id)
-    const result = itemFinded.qty - qty
+  function removeFromCart(id, qty = 1) {
+    const itemFinded = cart.find((i) => i.id === id);
+    const result = itemFinded.qty - qty;
 
     if (result > 0) {
-      itemFinded.qty -= qty
+      itemFinded.qty -= qty;
     } else {
-      cart = cart.filter(i => i.id !== id)
+      cart = cart.filter((i) => i.id !== id);
     }
-    
-    printCart()
+
+    printCart();
   }
 
   function deleteFromCart(id) {
-    cart = cart.filter(i => i.id !== id)
+    cart = cart.filter((i) => i.id !== id);
 
-    printCart()
+    printCart();
   }
 
   function showItemsCount() {
-    let suma = 0
+    let suma = 0;
     for (const item of cart) {
-      suma += item.qty
+      suma += item.qty;
     }
-    return suma
+    return suma;
   }
 
   function showTotal() {
-    let total = 0
+    let total = 0;
     for (const item of cart) {
-      const productFinded = db.find(p => p.id === item.id)
-      total += item.qty * productFinded.price 
+      const productFinded = db.find((p) => p.id === item.id);
+      total += item.qty * productFinded.price;
     }
-    return total
+    return total;
   }
 
   function checkout() {
     for (const item of cart) {
-      const productFinded = db.find(p => p.id === item.id)
-      productFinded.quantity -= item.qty
+      const productFinded = db.find((p) => p.id === item.id);
+      productFinded.quantity -= item.qty;
     }
 
-    cart = []
-    printCart()
-    printProducts()
-    window.alert('Gracias por su compra')    
+    cart = [];
+    printCart();
+    printProducts();
+    window.alert("Gracias por su compra");
   }
 
-  printCart()
+  printCart();
 
-  // Eventos 
-  productsDOM.addEventListener('click', function (e) {
-    if (e.target.closest('.add--to--cart')) {
-      const id = +e.target.closest('.add--to--cart').dataset.id
-      addToCart(id)
+  // Eventos
+  productsDOM.addEventListener("click", function (e) {
+    if (e.target.closest(".add--to--cart")) {
+      // const id = +e.target.closest(".add--to--cart").dataset.id;
+      // addToCart(id)
+      modalOverlay.style.display = "flex";
+      const closeModalButton = document.querySelector(
+        ".close-modal-button"
+      );
+      closeModalButton.addEventListener("click", () => {
+        modalOverlay.style.display = "none";
+      });
+      const addToCartButton = document.querySelector(
+        ".add-to-cart-button"
+      );
+      addToCartButton.addEventListener("click", () => {
+        modalOverlay.style.display = "none";
+        const id = +e.target.closest(".add--to--cart").dataset.id;
+        addToCart(id);
+      });
     }
-  })
+  });
 
-  cartDOM.addEventListener('click', function (e) {
-    if (e.target.closest('.article--minus')) {
-      const id = +e.target.closest('.article--minus').dataset.id
-      removeFromCart(id)
+  cartDOM.addEventListener("click", function (e) {
+    if (e.target.closest(".article--minus")) {
+      const id = +e.target.closest(".article--minus").dataset.id;
+      removeFromCart(id);
     }
 
-    if (e.target.closest('.article--plus')) {
-      const id = +e.target.closest('.article--plus').dataset.id
-      addToCart(id)
+    if (e.target.closest(".article--plus")) {
+      const id = +e.target.closest(".article--plus").dataset.id;
+      addToCart(id);
     }
 
-    if (e.target.closest('.remove-from-cart')) {
-      const id = +e.target.closest('.remove-from-cart').dataset.id
-      deleteFromCart(id)
+    if (e.target.closest(".remove-from-cart")) {
+      const id = +e.target.closest(".remove-from-cart").dataset.id;
+      deleteFromCart(id);
     }
-    
-  })
+  });
 
-  checkoutDOM.addEventListener('click', function () {
-    checkout()
-  })
+  checkoutDOM.addEventListener("click", function () {
+    checkout();
+  });
 }
 
-export default cart
+export default cart;

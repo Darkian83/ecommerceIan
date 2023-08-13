@@ -4,22 +4,35 @@ import products from "./components/products.js";
 import showCart from "./components/showCart.js";
 import showMenu from "./components/showMenu.js";
 import getProducts from "./helpers/getProducts.js";
+import showModal from "./components/modal.js";
 
 /* UI Elements */
 
-// hidden loader 
-loader()
+window.addEventListener("scroll", function () {
+  const header = document.querySelector(".header");
+  if (window.scrollY > 0) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
 
-// show menu 
-showMenu()
+// hidden loader
+loader();
 
-// show cart 
-showCart()
+// show menu
+showMenu();
+
+// show cart
+showCart();
 
 /* End UI Elements */
 
-// Products 
-const { db, printProducts } = products(await getProducts())
+// Products
+const { db, printProducts } = products(await getProducts());
 
-// Cart 
-cart(db, printProducts)
+// Modal
+showModal(db);
+
+// Cart
+cart(db, printProducts);

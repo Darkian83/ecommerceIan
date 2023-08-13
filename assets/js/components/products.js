@@ -2,7 +2,9 @@ function products(products) {
   const db = [...products];
 
   function printProducts() {
-    const productsDOM = document.querySelector(".products__container");
+    const productsDOM = document.querySelector(
+      ".products__container"
+    );
 
     let htmlProduct = "";
 
@@ -24,20 +26,20 @@ function products(products) {
             <h3 class="product__title">
               ${product.name}
             </h3>
-          </div>
+          </div>  
         </article>
       `;
     }
 
-    productsDOM.innerHTML = htmlProduct
+    productsDOM.innerHTML = htmlProduct;
   }
 
-  printProducts()
+  printProducts();
 
   return {
     db,
-    printProducts
-  }
+    printProducts,
+  };
 }
 
 export default products;

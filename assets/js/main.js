@@ -5,6 +5,7 @@ import showCart from "./components/showCart.js";
 import showMenu from "./components/showMenu.js";
 import getProducts from "./helpers/getProducts.js";
 import showModal from "./components/modal.js";
+// import modalDescuento from "./components/modalDescuento.js";
 
 /* UI Elements */
 
